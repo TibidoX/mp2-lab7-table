@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <iostream>
 using namespace std;
 
 typedef int TKey;
@@ -15,6 +16,11 @@ public:
 	{
 		//key = _key;
 		//val = _val;
+	}
+	TRecord(TKey _key, TValue _val)
+	{
+		key = _key;
+		val = _val;
 	}
 	bool operator >(TKey& _key)
 	{
@@ -41,7 +47,7 @@ public:
 		return key == _key;
 	}
 
-	bool operator==(TRecord& rec)
+	bool operator==(const TRecord& rec)
 	{
 		return (key == rec.key && val == rec.val);
 	}
@@ -69,6 +75,11 @@ public:
 		return Eff;
 	}
 
+	virtual void ClearEff()
+	{
+		Eff = 0;
+	}
+
 	virtual void Clear()
 	{
 		DataCount = 0;
@@ -87,4 +98,15 @@ public:
 	virtual bool IsEnd() = 0;
 	virtual bool GoNext() = 0;
 	virtual TRecord GetCurrRec() const = 0;
+	virtual void Print(ostream& os)
+	{
+		for (Reset(); !IsEnd(); GoNext())
+			os << GetCurrRec().key << ":\t" << GetCurrRec().val;
+	}
+
+	friend std::ostream& operator<<(std::ostream& os, TTable& t)
+	{
+		t.Print(os);
+		return os;
+	}
 };

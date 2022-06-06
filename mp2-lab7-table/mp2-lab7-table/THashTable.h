@@ -8,5 +8,4 @@ protected:
 	{
 		return key;
 	}
-
 };

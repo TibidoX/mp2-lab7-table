@@ -3,6 +3,7 @@
 #include "TSortTable.h"
 #include "TArrayTable.h"
 #include "TArrayHash.h"
+#include <iostream>
 using namespace std;
 
 void main()
@@ -49,6 +50,6 @@ void main()
 	cout << sc.Find(4) << endl;
 	cout << sc.GetEff();*/
 
-	TArrayHash a;
+	//TArrayHash a;
 
 }
