@@ -717,343 +717,343 @@ public:
 		return true;
 	}*/
 
-	int LeftTreeBalIns(TNode*& p) {
-		Eff++;
-		int result = 0;
+int LeftTreeBalIns(TNode*& p) {
+	Eff++;
+	int result = 0;
 
-		if (p->bal == 1) {
-			p->bal = 0;
+	if (p->balance == 1) {
+		p->balance = 0;
+		result = 0;
+	}
+	else if (p->balance == 0) {
+		p->balance = -1;
+		result = 1;
+	}
+	else {
+		TNode* pL = p->pLeft;
+
+		if (pL->balance == -1) {
+			p->pLeft = pL->pRight;
+			pL->pRight = p;
+			p->balance = 0;
+			pL->balance = 0;
 			result = 0;
+			p = pL;
 		}
-		else if (p->bal == 0) {
-			p->bal = -1;
-			result = 1;
-		}
-		else {
-			TNode* pL = p->pL;
+		else if (pL->balance == 1) {
+			TNode* pR = pL->pRight;
 
-			if (pL->bal == -1) {
-				p->pL = pL->pR;
-				pL->pR = p;
-				p->bal = 0;
-				pL->bal = 0;
-				result = 0;
-				p = pL;
+			pL->pRight = pR->pLeft;
+			p->pLeft = pR->pRight;
+			pR->pLeft = pL;
+			pR->pRight = p;
+
+			if (pR->balance == -1) {
+				pR->balance == 0;
+				pL->balance == 1;
+				p->balance == 1;
 			}
-			else if (pL->bal == 1) {
-				TNode* pR = pL->pR;
-
-				pL->pR = pR->pL;
-				p->pL = pR->pR;
-				pR->pL = pL;
-				pR->pR = p;
-
-				if (pR->bal == -1) {
-					pR->bal == 0;
-					pL->bal == 1;
-					p->bal == 1;
-				}
-				else {
-					pR->bal == 1;
-					pL->bal == 0;
-					p->bal == 0;
-				}
-
-				result = 0;
-				p = pR;
+			else {
+				pR->balance == 1;
+				pL->balance == 0;
+				p->balance == 0;
 			}
-		}
 
-		return result;
+			result = 0;
+			p = pR;
+		}
 	}
 
-	int RightTreeBalIns(TNode*& p) {
-		Eff++;
-		int result = 0;
+	return result;
+}
 
-		if (p->bal == 0) {
-			p->bal = 1;
-			result = 1;
-		}
-		else if (p->bal == -1) {
-			p->bal = 0;
+int RightTreeBalIns(TNode*& p) {
+	Eff++;
+	int result = 0;
+
+	if (p->balance == 0) {
+		p->balance = 1;
+		result = 1;
+	}
+	else if (p->balance == -1) {
+		p->balance = 0;
+		result = 0;
+	}
+	else {
+		TNode* pR = p->pRight;
+
+		if (pR->balance == 1) {
+			p->pRight = pR->pLeft;
+			pR->pLeft = p;
+			p->balance = 0;
+			pR->balance = 0;
 			result = 0;
+			p = pR;
 		}
-		else {
-			TNode* pR = p->pR;
+		else if (pR->balance == -1) {
+			TNode* pL = pR->pLeft;
 
-			if (pR->bal == 1) {
-				p->pR = pR->pL;
-				pR->pL = p;
-				p->bal = 0;
-				pR->bal = 0;
-				result = 0;
-				p = pR;
+			pR->pLeft = pL->pRight;
+			p->pRight = pL->pLeft;
+			pL->pRight = pR;
+			pL->pLeft = p;
+
+			if (pL->balance == -1) {
+				pR->balance == 0;
+				pL->balance == -1;
+				p->balance == 0;
 			}
-			else if (pR->bal == -1) {
-				TNode* pL = pR->pL;
-
-				pR->pL = pL->pR;
-				p->pR = pL->pL;
-				pL->pR = pR;
-				pL->pL = p;
-
-				if (pL->bal == -1) {
-					pR->bal == 0;
-					pL->bal == -1;
-					p->bal == 0;
-				}
-				else {
-					pR->bal == -1;
-					pL->bal == 0;
-					p->bal == -1;
-				}
-
-				result = 0;
-				p = pL;
+			else {
+				pR->balance == -1;
+				pL->balance == 0;
+				p->balance == -1;
 			}
+
+			result = 0;
+			p = pL;
 		}
-
-		return result;
 	}
 
-	int LeftTreeBalDel(TNode*& p) {
-		Eff++;
-		int result = 0;
+	return result;
+}
 
-		if (p->bal == 1)
+int LeftTreeBalDel(TNode*& p) {
+	Eff++;
+	int result = 0;
+
+	if (p->balance == 1)
+	{
+		p->balance = 0;
+		result = -1;
+	}
+	else if (p->balance == 0)
+	{
+		p->balance = -1;
+		result = 0;
+	}
+	else {
+		TNode* pl = p->pLeft;
+
+		if (pl->balance == -1)
 		{
-			p->bal = 0;
+			p->pLeft = pl->pRight;
+			pl->pRight = p;
+
+			pl->balance = 0;
+			p->balance = 0;
+
+			p = pl;
 			result = -1;
 		}
-		else if (p->bal == 0)
+		else if (pl->balance == 1)
 		{
-			p->bal = -1;
-			result = 0;
-		}
-		else {
-			TNode* pl = p->pL;
+			TNode* plpr = pl->pRight;
 
-			if (pl->bal == -1)
+			pl->pRight = plpr->pLeft;
+			plpr->pLeft = pl;
+			p->pLeft = plpr->pRight;
+			plpr->pRight = p;
+			if (plpr->balance == -1)
 			{
-				p->pL = pl->pR;
-				pl->pR = p;
-
-				pl->bal = 0;
-				p->bal = 0;
-
-				p = pl;
-				result = -1;
-			}
-			else if (pl->bal == 1)
-			{
-				TNode* plpr = pl->pR;
-
-				pl->pR = plpr->pL;
-				plpr->pL = pl;
-				p->pL = plpr->pR;
-				plpr->pR = p;
-				if (plpr->bal == -1)
-				{
-					p->bal = 1;
-				}
-				else
-				{
-					p->bal = 0;
-				}
-				if (plpr->bal == 1)
-				{
-					pl->bal = -1;
-				}
-				else
-				{
-					pl->bal = 0;
-				}
-				p = plpr;
-				p->bal = 0;
-				result = -1;
+				p->balance = 1;
 			}
 			else
 			{
-				TNode* pp = p;
-				TNode* plpl = pl->pL;
-				TNode* plpr = pl->pR;
-
-				p = pl;
-				p->pL = plpl;
-				p->pR = pp;
-				pp->pL = plpr;
-				pl->bal = 1;
-				return 0;
+				p->balance = 0;
 			}
-		}
-		return result;
-	}
-
-	int RightTreeBalDel(TNode*& p) {
-		Eff++;
-		int result = 0;
-
-		if (p->bal == -1)
-		{
-			p->bal = 0;
+			if (plpr->balance == 1)
+			{
+				pl->balance = -1;
+			}
+			else
+			{
+				pl->balance = 0;
+			}
+			p = plpr;
+			p->balance = 0;
 			result = -1;
-		}
-		else if (p->bal == 0)
-		{
-			p->bal = 1;
-			result = 0;
 		}
 		else
 		{
-			TNode* pr = p->pR;
-			if (pr->bal == 1)
+			TNode* pp = p;
+			TNode* plpl = pl->pLeft;
+			TNode* plpr = pl->pRight;
+
+			p = pl;
+			p->pLeft = plpl;
+			p->pRight = pp;
+			pp->pLeft = plpr;
+			pl->balance = 1;
+			return 0;
+		}
+	}
+	return result;
+}
+
+int RightTreeBalDel(TNode*& p) {
+	Eff++;
+	int result = 0;
+
+	if (p->balance == -1)
+	{
+		p->balance = 0;
+		result = -1;
+	}
+	else if (p->balance == 0)
+	{
+		p->balance = 1;
+		result = 0;
+	}
+	else
+	{
+		TNode* pr = p->pRight;
+		if (pr->balance == 1)
+		{
+			p->pRight = pr->pLeft;
+			pr->pLeft = p;
+
+			pr->balance = 0;
+			p->balance = 0;
+
+			p = pr;
+			result = -1;
+		}
+		else if (pr->balance == -1)
+		{
+			TNode* prpl = pr->pLeft;
+
+			pr->pLeft = prpl->pRight;
+			prpl->pRight = pr;
+			p->pRight = prpl->pLeft;
+			prpl->pLeft = p;
+			if (prpl->balance == 1)
 			{
-				p->pR = pr->pL;
-				pr->pL = p;
-
-				pr->bal = 0;
-				p->bal = 0;
-
-				p = pr;
-				result = -1;
-			}
-			else if (pr->bal == -1)
-			{
-				TNode* prpl = pr->pL;
-
-				pr->pL = prpl->pR;
-				prpl->pR = pr;
-				p->pR = prpl->pL;
-				prpl->pL = p;
-				if (prpl->bal == 1)
-				{
-					p->bal = -1;
-				}
-				else
-				{
-					p->bal = 0;
-				}
-				if (prpl->bal == -1)
-				{
-					pr->bal = 1;
-				}
-				else
-				{
-					pr->bal = 0;
-				}
-				p = prpl;
-				p->bal = 0;
-				result = -1;
+				p->balance = -1;
 			}
 			else
 			{
-				TNode* pp = p;
-				TNode* prpl = pr->pL;
-				TNode* prpr = pr->pR;
-
-				p = pr;
-				p->pL = pp;
-				p->pR = prpr;
-				pp->pR = prpl;
-				pr->bal = -1;
-				return 0;
+				p->balance = 0;
 			}
+			if (prpl->balance == -1)
+			{
+				pr->balance = 1;
+			}
+			else
+			{
+				pr->balance = 0;
+			}
+			p = prpl;
+			p->balance = 0;
+			result = -1;
 		}
-		return result;
+		else
+		{
+			TNode* pp = p;
+			TNode* prpl = pr->pLeft;
+			TNode* prpr = pr->pRight;
+
+			p = pr;
+			p->pLeft = pp;
+			p->pRight = prpr;
+			pp->pRight = prpl;
+			pr->balance = -1;
+			return 0;
+		}
+	}
+	return result;
+}
+
+int InsBalTree(TNode*& p, TRecord rec) {
+	Eff++;
+	int result = 0;
+
+	if (p == NULL) {
+		p = new TNode(rec);
+		result = 1;
+		DataCount++;
+	}
+	else if (p->rec.key > rec.key) {
+		int tmp = InsBalTree(p->pLeft, rec);
+
+		if (tmp == 1) {
+			result = LeftTreeBalIns(p);
+		}
+	}
+	else {
+		int tmp = InsBalTree(p->pRight, rec);
+
+		if (tmp == 1) {
+			result = RightTreeBalIns(p);
+		}
 	}
 
-	int InsBalTree(TNode*& p, TRecord rec) {
-		Eff++;
-		int result = 0;
+	return result;
+}
 
-		if (p == NULL) {
-			p = new TNode(rec);
-			result = 1;
-			DataCount++;
+int DelBalTree(TNode*& p, TKey key) {
+	Eff++;
+	int result = 0;
+
+	if (p == NULL) {
+		return result;
+	}
+	if (key > p->rec.key) {
+		int tmp = DelBalTree(p->pRight, key);
+
+		if (tmp != 0) {
+			result = LeftTreeBalDel(p);
 		}
-		else if (p->rec.key > rec.key) {
-			int tmp = InsBalTree(p->pL, rec);
+	}
+	else if (key < p->rec.key) {
+		int tmp = DelBalTree(p->pLeft, key);
 
-			if (tmp == 1) {
-				result = LeftTreeBalIns(p);
-			}
+		if (tmp != 0) {
+			result = RightTreeBalDel(p);
+		}
+	}
+	else if (key == p->rec.key) {
+		DataCount--;
+		if (p->pLeft == NULL && p->pRight == NULL) {
+			delete p;
+			p = NULL;
+			result = -1;
+		}
+		else if (p->pLeft != NULL && p->pRight == NULL) {
+			p->rec = p->pLeft->rec;
+			delete p->pLeft;
+			p->pLeft = NULL;
+			p->balance = 0;
+			result = -1;
+		}
+		else if (p->pLeft == NULL && p->pRight != NULL) {
+			p->rec = p->pRight->rec;
+			delete p->pRight;
+			p->pRight = NULL;
+			p->balance = 0;
+			result = 1;
 		}
 		else {
-			int tmp = InsBalTree(p->pR, rec);
+			TNode* pL = p->pLeft;
+			TNode* pR = p->pRight;
+			TNode* pMax = FindMax(pL);
 
-			if (tmp == 1) {
-				result = RightTreeBalIns(p);
-			}
-		}
-
-		return result;
-	}
-
-	int DelBalTree(TNode*& p, TKey key) {
-		Eff++;
-		int result = 0;
-
-		if (p == NULL) {
-			return result;
-		}
-		if (key > p->rec.key) {
-			int tmp = DelBalTree(p->pR, key);
+			p->rec = pMax->rec;
+			int tmp = DelBalTree(p->pLeft, pMax->rec.key);
 
 			if (tmp != 0) {
-				result = LeftTreeBalDel(p);
+				result = RightTreeBalDel(p->pRight);
 			}
 		}
-		else if (key < p->rec.key) {
-			int tmp = DelBalTree(p->pL, key);
-
-			if (tmp != 0) {
-				result = RightTreeBalDel(p);
-			}
-		}
-		else if (key == p->rec.key) {
-			DataCount--;
-			if (p->pL == NULL && p->pR == NULL) {
-				delete p;
-				p = NULL;
-				result = -1;
-			}
-			else if (p->pL != NULL && p->pR == NULL) {
-				p->rec = p->pL->rec;
-				delete p->pL;
-				p->pL = NULL;
-				p->bal = 0;
-				result = -1;
-			}
-			else if (p->pL == NULL && p->pR != NULL) {
-				p->rec = p->pR->rec;
-				delete p->pR;
-				p->pR = NULL;
-				p->bal = 0;
-				result = 1;
-			}
-			else {
-				TNode* pL = p->pL;
-				TNode* pR = p->pR;
-				TNode* pMax = FindMax(pL);
-
-				p->rec = pMax->rec;
-				int tmp = DelBalTree(p->pL, pMax->rec.key);
-
-				if (tmp != 0) {
-					result = RightTreeBalDel(p->pR);
-				}
-			}
-		}
-		return result;
 	}
+	return result;
+}
 
-	TNode* FindMax(TNode* p) const {
-		while (p->pR != NULL) {
-			p = p->pR;
-		}
-		return p;
+TNode* FindMax(TNode* p) const {
+	while (p->pRight != NULL) {
+		p = p->pRight;
 	}
+	return p;
+}
 
 public:
 	bool Insert(TRecord rec) {

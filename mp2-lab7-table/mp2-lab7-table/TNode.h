@@ -1,18 +1,10 @@
 #pragma once
 #include "TTable.h"
 
-struct TNode
-{
+struct TNode {
 	TRecord rec;
-	TNode* pL, * pR;
-	int pos, level;
-	int bal = 0;
+	TNode* pLeft, * pRight;
+	int balance;
 
-public:
-	TNode(TRecord _rec)
-	{
-		rec = _rec;
-		pL = nullptr;
-		pR = nullptr;
-	}
+	TNode(TRecord rec, TNode* pLeft = NULL, TNode* pRight = NULL) : rec(rec), pLeft(pLeft), pRight(pRight), balance(0) {}
 };

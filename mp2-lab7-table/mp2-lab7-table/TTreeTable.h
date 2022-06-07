@@ -35,11 +35,11 @@ public:
 			pPrev = pCurr;
 			if (pCurr->rec.key > key)
 			{
-				pCurr = pCurr->pL;
+				pCurr = pCurr->pLeft;
 			}
 			else
 			{
-				pCurr = pCurr->pR;
+				pCurr = pCurr->pRight;
 			}
 		}
 		pCurr = pPrev;
@@ -75,10 +75,10 @@ public:
 		}
 		else {
 			if (rec.key > pCurr->rec.key) {
-				pCurr->pR = tmp;
+				pCurr->pRight = tmp;
 			}
 			else {
-				pCurr->pL = tmp;
+				pCurr->pLeft = tmp;
 			}
 		}
 
@@ -91,38 +91,38 @@ public:
 		if (!Find(key))
 			return false;
 		TNode* tmp = pCurr;
-		if (pCurr->pR == nullptr)
+		if (pCurr->pRight == nullptr)
 		{
 			if (pPrev == nullptr)
-				pRoot = pCurr->pL;
+				pRoot = pCurr->pLeft;
 			if (pCurr->rec.key > pPrev->rec.key)
-				pPrev->pR = pCurr->pL;
+				pPrev->pRight = pCurr->pLeft;
 			else
-				pPrev->pL = pCurr->pL;
+				pPrev->pLeft = pCurr->pLeft;
 		}
-		else if (pCurr->pL == nullptr)
+		else if (pCurr->pLeft == nullptr)
 		{
 			if (pPrev == nullptr)
-				pRoot = pCurr->pR;
+				pRoot = pCurr->pRight;
 			if (pCurr->rec.key > pPrev->rec.key)
-				pPrev->pR = pCurr->pR;
+				pPrev->pRight = pCurr->pRight;
 			else
-				pPrev->pL = pCurr->pR;
+				pPrev->pLeft = pCurr->pRight;
 		}
 		else
 		{
-			tmp = tmp->pL;
+			tmp = tmp->pLeft;
 			pPrev = pCurr;
-			while (tmp->pR != nullptr)
+			while (tmp->pRight != nullptr)
 			{
 				pPrev = tmp;
-				tmp = tmp->pR;
+				tmp = tmp->pRight;
 			}
 			pCurr->rec = tmp->rec;
-			if (pCurr->pL == tmp)
-				pPrev->pL = tmp->pL;
+			if (pCurr->pLeft == tmp)
+				pPrev->pLeft = tmp->pLeft;
 			else
-				pPrev->pR = tmp->pL;
+				pPrev->pRight = tmp->pLeft;
 			delete tmp;
 		}
 		DataCount--;
@@ -137,10 +137,10 @@ public:
 		st.Clear();
 		if (pCurr)
 		{
-			while (pCurr->pL)
+			while (pCurr->pLeft)
 			{
 				st.Push(pCurr);
-				pCurr = pCurr->pL;
+				pCurr = pCurr->pLeft;
 			}
 		}
 		st.Push(pCurr);
@@ -151,13 +151,13 @@ public:
 		pCurr = st.Pop();
 		if (pCurr)
 		{
-			if (pCurr->pR)
+			if (pCurr->pRight)
 			{
-				pCurr = pCurr->pR;
-				while (pCurr->pL)
+				pCurr = pCurr->pRight;
+				while (pCurr->pLeft)
 				{
 					st.Push(pCurr);
-					pCurr = pCurr->pL;
+					pCurr = pCurr->pLeft;
 				}
 				st.Push(pCurr);
 			}
@@ -180,8 +180,8 @@ public:
 	{
 		if (p)
 		{
-			DelTree(p->pL);
-			DelTree(p->pR);
+			DelTree(p->pLeft);
+			DelTree(p->pRight);
 			delete p;
 		}
 	}
@@ -192,8 +192,8 @@ public:
 			for (int i = 0; i < level; i++)
 				os << ' ';
 			os << p->rec.key << endl;
-			PrintRec(os, p->pL, level + 1);
-			PrintRec(os, p->pR, level + 1);
+			PrintRec(os, p->pLeft, level + 1);
+			PrintRec(os, p->pRight, level + 1);
 		}
 	}
 
