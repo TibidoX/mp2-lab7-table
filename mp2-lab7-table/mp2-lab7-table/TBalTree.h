@@ -3,411 +3,51 @@
 #include "TTreeTable.h"
 class TBalTree : public TTreeTable
 {
-//    int LeftTreeBalIns(TNode*& p)
-//    {
-//        int res = 0; // did height change
-//        Eff++;
-//        if (p->bal == 1)
-//        {
-//            p->bal = 0;
-//            res = 0;
-//
-//        }
-//        else if (p->bal == 0)
-//        {
-//            p->bal = -1;
-//            res = 1;
-//        }
-//        else
-//        {
-//            TNode* left = p->pL;
-//            if (left->bal == -1) // перевес в левом поддереве слева
-//            {
-//                p->pL = left->pR;
-//                left->pR = p;
-//                p->bal = left->bal = 0;
-//                p = left;
-//            }
-//            else if (left->bal == 1) // перевес в левом поддереве справа
-//            {
-//                TNode* right = left->pR;
-//                left->pR = right->pL;
-//                p->pL = right->pR;
-//                right->pL = left;
-//                right->pR = p;
-//                if (right->bal == -1)
-//                {
-//                    right->bal = 0;
-//                    left->bal = 1;// 0;
-//                    p->bal = 1;
-//                }
-//                else
-//                {
-//                    right->bal = 1;// 0;
-//                    left->bal = 0;//-1;
-//                    p->bal = 0;
-//                }
-//                res = 0;
-//                p = right;
-//            }
-//        }
-//        return res;
-//    }
-//
-//    int RightTreeBalIns(TNode*& p)
-//    {
-//        int res = 0; // did height change
-//        Eff++;
-//        if (p->bal == 0)
-//        {
-//            p->bal = 1;
-//            res = 1;
-//        }
-//        else if (p->bal == -1)
-//        {
-//            p->bal = 0;
-//            res = 0;
-//        }
-//        else
-//        {
-//            TNode* right = p->pR;
-//            if (right->bal == 1) // перевес в правом поддереве справа
-//            {
-//                p->pR = right->pL;
-//                right->pL = p;
-//                p->bal = right->bal = 0;
-//                p = right;
-//            }
-//            else if (right->bal == -1) // перевес в правом поддереве слева
-//            {
-//                TNode* left = right->pL;
-//                right->pL = left->pR;
-//                p->pR = left->pL;
-//                left->pR = right;
-//                left->pL = p;
-//                if (left->bal == -1)
-//                {
-//                    left->bal = -1;// 0;
-//                    right->bal = 0;
-//                    p->bal = 0;// 1;
-//                }
-//                else
-//                {
-//                    left->bal = 0;
-//                    right->bal = -1;
-//                    p->bal = -1;// 0;
-//                }
-//                res = 0;
-//                p = left;
-//            }
-//        }
-//        return res;
-//    }
-//    int LeftTreeBalDel(TNode*& p)
-//    {
-//        int result = 0;
-//
-//        if (p->bal == 1)
-//        {
-//            p->bal = 0;
-//            result = -1;
-//        }
-//        else if (p->bal == 0)
-//        {
-//            p->bal = -1;
-//            result = 0;
-//        }
-//        else {
-//            TNode* pl = p->pL;
-//
-//            if (pl->bal == -1)
-//            {
-//                p->pL = pl->pR;
-//                pl->pR = p;
-//
-//                pl->bal = 0;
-//                p->bal = 0;
-//
-//                p = pl;
-//                result = -1;
-//            }
-//            else if (pl->bal == 1)
-//            {
-//                TNode* plpr = pl->pR;
-//
-//                pl->pR = plpr->pL;
-//                plpr->pL = pl;
-//                p->pL = plpr->pR;
-//                plpr->pR = p;
-//                if (plpr->bal == -1)
-//                {
-//                    p->bal = 1;
-//                }
-//                else
-//                {
-//                    p->bal = 0;
-//                }
-//                if (plpr->bal == 1)
-//                {
-//                    pl->bal = -1;
-//                }
-//                else
-//                {
-//                    pl->bal = 0;
-//                }
-//                p = plpr;
-//                p->bal = 0;
-//                result = -1;
-//            }
-//            else
-//            {
-//                TNode* pp = p;
-//                TNode* plpl = pl->pL;
-//                TNode* plpr = pl->pR;
-//
-//                p = pl;
-//                p->pL = plpl;
-//                p->pR = pp;
-//                pp->pL = plpr;
-//                pl->bal = 1;
-//                return 0;
-//            }
-//        }
-//        return result;
-//    }
-//    int RightTreeBalDel(TNode*& p)
-//    {
-//        int result = 0;
-//        if (p->bal == -1)
-//        {
-//            p->bal = 0;
-//            result = -1;
-//        }
-//        else if (p->bal == 0)
-//        {
-//            p->bal = 1;
-//            result = 0;
-//        }
-//        else
-//        {
-//            TNode* pr = p->pR;
-//            if (pr->bal == 1)
-//            {
-//                p->pR = pr->pL;
-//                pr->pL = p;
-//
-//                pr->bal = 0;
-//                p->bal = 0;
-//
-//                p = pr;
-//                result = -1;
-//            }
-//            else if (pr->bal == -1)
-//            {
-//                TNode* prpl = pr->pL;
-//
-//                pr->pL = prpl->pR;
-//                prpl->pR = pr;
-//                p->pR = prpl->pL;
-//                prpl->pL = p;
-//                if (prpl->bal == 1)
-//                {
-//                    p->bal = -1;
-//                }
-//                else
-//                {
-//                    p->bal = 0;
-//                }
-//                if (prpl->bal == -1)
-//                {
-//                    pr->bal = 1;
-//                }
-//                else
-//                {
-//                    pr->bal = 0;
-//                }
-//                p = prpl;
-//                p->bal = 0;
-//                result = -1;
-//            }
-//            else
-//            {
-//                TNode* pp = p;
-//                TNode* prpl = pr->pL;
-//                TNode* prpr = pr->pR;
-//
-//                p = pr;
-//                p->pL = pp;
-//                p->pR = prpr;
-//                pp->pR = prpl;
-//                pr->bal = -1;
-//                return 0;
-//            }
-//        }
-//        return result;
-//    }
-//    int InsBalTree(TNode*& p, TRecord rec)
-//    {
-//        int res = 0;
-//        if (p == nullptr)
-//        {
-//            p = new TNode(rec);
-//            res = 1;
-//            DataCount++;
-//        }
-//        else if (p->rec.key > rec.key)
-//        {
-//            int tmp = InsBalTree(p->pL, rec);
-//            if (tmp == 1)
-//            {
-//                res = LeftTreeBalIns(p);
-//            }
-//        }
-//        else
-//        {
-//            int tmp = InsBalTree(p->pR, rec);
-//            if (tmp == 1)
-//            {
-//                res = RightTreeBalIns(p);
-//            }
-//        }
-//        return res;
-//    }
-//    int DelBalance(TNode*& p, TKey key)
-//    {
-//        int res = 0;
-//        Eff++;
-//        if (p == nullptr)
-//        {
-//            return res;
-//        }
-//        if (key > p->rec.key)
-//        {
-//            int tmp = DelBalance(p->pR, key);
-//            if (tmp != 0)
-//            {
-//                res = LeftTreeBalDel(p);
-//            }
-//        }
-//        else if (key < p->rec.key)
-//        {
-//            int tmp = DelBalance(p->pL, key);
-//            if (tmp != 0)
-//            {
-//                res = RightTreeBalDel(p);
-//            }
-//        }
-//        else
-//        {
-//            DataCount--;
-//            if (p->pL == nullptr && p->pR == nullptr) // удаление листа дерева
-//            {
-//                delete p;
-//                p = nullptr;
-//                res = -1;
-//            }
-//            else if (p->pL != nullptr && p->pR == nullptr) // удаление вершины с одним потомком слева
-//            {
-//                p->rec = p->pL->rec;
-//                delete p->pL;
-//                p->pL = nullptr;
-//                p->bal = 0;
-//                res = -1;
-//            }
-//            else if (p->pL == nullptr && p->pR != nullptr) // удаление вершины с одним потомком справа
-//            {
-//                p->rec = p->pR->rec;
-//                delete p->pR;
-//                p->pR = nullptr;
-//                p->bal = 0;
-//                res = 1;
-//            }
-//            else  // удаление вершины с двумя потомками
-//            {
-//                TNode* pl = p->pL, * pr = p->pR;
-//                TNode* pmax = FindMax(pl);
-//                p->rec = pmax->rec;
-//                int tmp = DelBalance(p->pL, pmax->rec.key);
-//                if (tmp != 0)
-//                {
-//                    res = RightTreeBalDel(p->pR);
-//                }
-//            }
-//            return res;
-//        }
-//    }
-//    TNode* FindMax(TNode* p) const
-//    {
-//        if (p) {
-//            while (p->pR)
-//                p = p->pR;
-//            return p;
-//        }
-//    }
-//public:
-//    bool Insert(TRecord rec)
-//    {
-//        if (Find(rec.key))
-//        {
-//            return false;
-//        }
-//        InsBalTree(pRoot, rec);
-//        return true;
-//    }
-//    bool Delete(TKey key)
-//    {
-//        if (!Find(key) || IsEmpty())
-//        {
-//            return false;
-//        }
-//        DelBalance(pRoot, key);
-//        return true;
-//    }
-
-	/*int LeftTreeBalIns(TNode*& p) {
+public:
+	int LeftTreeBalIns(TNode*& p) {
 		Eff++;
 		int result = 0;
 
-		if (p->bal == 1) {
-			p->bal = 0;
+		if (p->balance == 1) {
+			p->balance = 0;
 			result = 0;
 		}
-		else if (p->bal == 0) {
-			p->bal = -1;
+		else if (p->balance == 0) {
+			p->balance = -1;
 			result = 1;
 		}
 		else {
-			TNode* pL = p->pL;
+			TNode* leftNode = p->pL;
 
-			if (pL->bal == -1) {
-				p->pL = pL->pR;
-				pL->pR = p;
-				p->bal = 0;
-				pL->bal = 0;
+			if (leftNode->balance == -1) {
+				p->pL = leftNode->pR;
+				leftNode->pR = p;
+				p->balance = 0;
+				leftNode->balance = 0;
 				result = 0;
-				p = pL;
+				p = leftNode;
 			}
-			else if (pL->bal == 1) {
-				TNode* pR = pL->pR;
+			else if (leftNode->balance == 1) {
+				TNode* rightNode = leftNode->pR;
 
-				pL->pR = pR->pL;
-				p->pL = pR->pR;
-				pR->pL = pL;
-				pR->pR = p;
+				leftNode->pR = rightNode->pR;
+				p->pL = rightNode->pR;
+				rightNode->pL = leftNode;
+				rightNode->pR = p;
 
-				if (pR->bal == -1) {
-					pR->bal == 0;
-					pL->bal == 1;
-					p->bal == 1;
+				if (rightNode->balance == -1) {
+					rightNode->balance = 0;
+					leftNode->balance = 1;
+					p->balance = 1;
 				}
 				else {
-					pR->bal == 1;
-					pL->bal == 0;
-					p->bal == 0;
+					rightNode->balance = 1;
+					leftNode->balance = 0;
+					p->balance = 0;
 				}
 
 				result = 0;
-				p = pR;
+				p = rightNode;
 			}
 		}
 
@@ -418,46 +58,46 @@ class TBalTree : public TTreeTable
 		Eff++;
 		int result = 0;
 
-		if (p->bal == 0) {
-			p->bal = 1;
+		if (p->balance == 0) {
+			p->balance = 1;
 			result = 1;
 		}
-		else if (p->bal == -1) {
-			p->bal = 0;
+		else if (p->balance == -1) {
+			p->balance = 0;
 			result = 0;
 		}
 		else {
-			TNode* pR = p->pR;
+			TNode* rightNode = p->pR;
 
-			if (pR->bal == 1) {
-				p->pR = pR->pL;
-				pR->pL = p;
-				p->bal = 0;
-				pR->bal = 0;
+			if (rightNode->balance == 1) {
+				p->pR = rightNode->pL;
+				rightNode->pL = p;
+				p->balance = 0;
+				rightNode->balance = 0;
 				result = 0;
-				p = pR;
+				p = rightNode;
 			}
-			else if (pR->bal == -1) {
-				TNode* pL = pR->pL;
+			else if (rightNode->balance == -1) {
+				TNode* leftNode = rightNode->pL;
 
-				pR->pL = pL->pR;
-				p->pR = pL->pL;
-				pL->pR = pR;
-				pL->pL = p;
+				rightNode->pL = leftNode->pR;
+				p->pR = leftNode->pL;
+				leftNode->pR = rightNode;
+				leftNode->pL = p;
 
-				if (pL->bal == -1) {
-					pR->bal == 0;
-					pL->bal == -1;
-					p->bal == 0;
+				if (leftNode->balance == -1) {
+					rightNode->balance = 0;
+					leftNode->balance = -1;
+					p->balance = 0;
 				}
 				else {
-					pR->bal == -1;
-					pL->bal == 0;
-					p->bal == -1;
+					rightNode->balance = -1;
+					leftNode->balance = 0;
+					p->balance = -1;
 				}
 
 				result = 0;
-				p = pL;
+				p = leftNode;
 			}
 		}
 
@@ -468,69 +108,69 @@ class TBalTree : public TTreeTable
 		Eff++;
 		int result = 0;
 
-		if (p->bal == 1)
+		if (p->balance == 1)
 		{
-			p->bal = 0;
+			p->balance = 0;
 			result = -1;
 		}
-		else if (p->bal == 0)
+		else if (p->balance == 0)
 		{
-			p->bal = -1;
+			p->balance = -1;
 			result = 0;
 		}
 		else {
-			TNode* pl = p->pL;
+			TNode* leftNode = p->pL;
 
-			if (pl->bal == -1)
+			if (leftNode->balance == -1)
 			{
-				p->pL = pl->pR;
-				pl->pR = p;
+				p->pL = leftNode->pR;
+				leftNode->pR = p;
 
-				pl->bal = 0;
-				p->bal = 0;
+				leftNode->balance = 0;
+				p->balance = 0;
 
-				p = pl;
+				p = leftNode;
 				result = -1;
 			}
-			else if (pl->bal == 1)
+			else if (leftNode->balance == 1)
 			{
-				TNode* plpr = pl->pR;
+				TNode* plpr = leftNode->pR;
 
-				pl->pR = plpr->pL;
-				plpr->pL = pl;
+				leftNode->pR = plpr->pL;
+				plpr->pL = leftNode;
 				p->pL = plpr->pR;
 				plpr->pR = p;
-				if (plpr->bal == -1)
+				if (plpr->balance == -1)
 				{
-					p->bal = 1;
+					p->balance = 1;
 				}
 				else
 				{
-					p->bal = 0;
+					p->balance = 0;
 				}
-				if (plpr->bal == 1)
+				if (plpr->balance == 1)
 				{
-					pl->bal = -1;
+					leftNode->balance = -1;
 				}
 				else
 				{
-					pl->bal = 0;
+					leftNode->balance = 0;
 				}
 				p = plpr;
-				p->bal = 0;
+				p->balance = 0;
 				result = -1;
 			}
 			else
 			{
 				TNode* pp = p;
-				TNode* plpl = pl->pL;
-				TNode* plpr = pl->pR;
+				TNode* plpl = leftNode->pL;
+				TNode* plpr = leftNode->pR;
 
-				p = pl;
+				p = leftNode;
 				p->pL = plpl;
 				p->pR = pp;
 				pp->pL = plpr;
-				pl->bal = 1;
+				leftNode->balance = 1;
 				return 0;
 			}
 		}
@@ -541,69 +181,69 @@ class TBalTree : public TTreeTable
 		Eff++;
 		int result = 0;
 
-		if (p->bal == -1)
+		if (p->balance == -1)
 		{
-			p->bal = 0;
+			p->balance = 0;
 			result = -1;
 		}
-		else if (p->bal == 0)
+		else if (p->balance == 0)
 		{
-			p->bal = 1;
+			p->balance = 1;
 			result = 0;
 		}
 		else
 		{
-			TNode* pr = p->pR;
-			if (pr->bal == 1)
+			TNode* rightNode = p->pR;
+			if (rightNode->balance == 1)
 			{
-				p->pR = pr->pL;
-				pr->pL = p;
+				p->pR = rightNode->pL;
+				rightNode->pL = p;
 
-				pr->bal = 0;
-				p->bal = 0;
+				rightNode->balance = 0;
+				p->balance = 0;
 
-				p = pr;
+				p = rightNode;
 				result = -1;
 			}
-			else if (pr->bal == -1)
+			else if (rightNode->balance == -1)
 			{
-				TNode* prpl = pr->pL;
+				TNode* prpl = rightNode->pL;
 
-				pr->pL = prpl->pR;
-				prpl->pR = pr;
+				rightNode->pL = prpl->pR;
+				prpl->pR = rightNode;
 				p->pR = prpl->pL;
 				prpl->pL = p;
-				if (prpl->bal == 1)
+				if (prpl->balance == 1)
 				{
-					p->bal = -1;
+					p->balance = -1;
 				}
 				else
 				{
-					p->bal = 0;
+					p->balance = 0;
 				}
-				if (prpl->bal == -1)
+				if (prpl->balance == -1)
 				{
-					pr->bal = 1;
+					rightNode->balance = 1;
 				}
 				else
 				{
-					pr->bal = 0;
+					rightNode->balance = 0;
 				}
 				p = prpl;
-				p->bal = 0;
+				p->balance = 0;
 				result = -1;
 			}
 			else
 			{
 				TNode* pp = p;
-				TNode* prpl = pr->pL;
-				TNode* prpr = pr->pR;
+				TNode* prpl = rightNode->pL;
+				TNode* prpr = rightNode->pR;
 
-				p = pr;
+				p = rightNode;
 				p->pL = pp;
 				p->pR = prpr;
 				pp->pR = prpl;
-				pr->bal = -1;
+				rightNode->balance = -1;
 				return 0;
 			}
 		}
@@ -669,20 +309,20 @@ class TBalTree : public TTreeTable
 				p->rec = p->pL->rec;
 				delete p->pL;
 				p->pL = NULL;
-				p->bal = 0;
+				p->balance = 0;
 				result = -1;
 			}
 			else if (p->pL == NULL && p->pR != NULL) {
 				p->rec = p->pR->rec;
 				delete p->pR;
 				p->pR = NULL;
-				p->bal = 0;
+				p->balance = 0;
 				result = 1;
 			}
 			else {
-				TNode* pL = p->pL;
-				TNode* pR = p->pR;
-				TNode* pMax = FindMax(pL);
+				TNode* leftNode = p->pL;
+				TNode* rightNode = p->pR;
+				TNode* pMax = FindMax(leftNode);
 
 				p->rec = pMax->rec;
 				int tmp = DelBalTree(p->pL, pMax->rec.key);
@@ -702,360 +342,6 @@ class TBalTree : public TTreeTable
 		return p;
 	}
 
-public:
-	bool Insert(TRecord rec) {
-		if (Find(rec.key)) return false;
-
-		InsBalTree(pRoot, rec);
-		return true;
-	}
-
-	bool Delete(TKey key) {
-		if (!Find(key)) return false;
-
-		DelBalTree(pRoot, key);
-		return true;
-	}*/
-
-int LeftTreeBalIns(TNode*& p) {
-	Eff++;
-	int result = 0;
-
-	if (p->balance == 1) {
-		p->balance = 0;
-		result = 0;
-	}
-	else if (p->balance == 0) {
-		p->balance = -1;
-		result = 1;
-	}
-	else {
-		TNode* pL = p->pLeft;
-
-		if (pL->balance == -1) {
-			p->pLeft = pL->pRight;
-			pL->pRight = p;
-			p->balance = 0;
-			pL->balance = 0;
-			result = 0;
-			p = pL;
-		}
-		else if (pL->balance == 1) {
-			TNode* pR = pL->pRight;
-
-			pL->pRight = pR->pLeft;
-			p->pLeft = pR->pRight;
-			pR->pLeft = pL;
-			pR->pRight = p;
-
-			if (pR->balance == -1) {
-				pR->balance == 0;
-				pL->balance == 1;
-				p->balance == 1;
-			}
-			else {
-				pR->balance == 1;
-				pL->balance == 0;
-				p->balance == 0;
-			}
-
-			result = 0;
-			p = pR;
-		}
-	}
-
-	return result;
-}
-
-int RightTreeBalIns(TNode*& p) {
-	Eff++;
-	int result = 0;
-
-	if (p->balance == 0) {
-		p->balance = 1;
-		result = 1;
-	}
-	else if (p->balance == -1) {
-		p->balance = 0;
-		result = 0;
-	}
-	else {
-		TNode* pR = p->pRight;
-
-		if (pR->balance == 1) {
-			p->pRight = pR->pLeft;
-			pR->pLeft = p;
-			p->balance = 0;
-			pR->balance = 0;
-			result = 0;
-			p = pR;
-		}
-		else if (pR->balance == -1) {
-			TNode* pL = pR->pLeft;
-
-			pR->pLeft = pL->pRight;
-			p->pRight = pL->pLeft;
-			pL->pRight = pR;
-			pL->pLeft = p;
-
-			if (pL->balance == -1) {
-				pR->balance == 0;
-				pL->balance == -1;
-				p->balance == 0;
-			}
-			else {
-				pR->balance == -1;
-				pL->balance == 0;
-				p->balance == -1;
-			}
-
-			result = 0;
-			p = pL;
-		}
-	}
-
-	return result;
-}
-
-int LeftTreeBalDel(TNode*& p) {
-	Eff++;
-	int result = 0;
-
-	if (p->balance == 1)
-	{
-		p->balance = 0;
-		result = -1;
-	}
-	else if (p->balance == 0)
-	{
-		p->balance = -1;
-		result = 0;
-	}
-	else {
-		TNode* pl = p->pLeft;
-
-		if (pl->balance == -1)
-		{
-			p->pLeft = pl->pRight;
-			pl->pRight = p;
-
-			pl->balance = 0;
-			p->balance = 0;
-
-			p = pl;
-			result = -1;
-		}
-		else if (pl->balance == 1)
-		{
-			TNode* plpr = pl->pRight;
-
-			pl->pRight = plpr->pLeft;
-			plpr->pLeft = pl;
-			p->pLeft = plpr->pRight;
-			plpr->pRight = p;
-			if (plpr->balance == -1)
-			{
-				p->balance = 1;
-			}
-			else
-			{
-				p->balance = 0;
-			}
-			if (plpr->balance == 1)
-			{
-				pl->balance = -1;
-			}
-			else
-			{
-				pl->balance = 0;
-			}
-			p = plpr;
-			p->balance = 0;
-			result = -1;
-		}
-		else
-		{
-			TNode* pp = p;
-			TNode* plpl = pl->pLeft;
-			TNode* plpr = pl->pRight;
-
-			p = pl;
-			p->pLeft = plpl;
-			p->pRight = pp;
-			pp->pLeft = plpr;
-			pl->balance = 1;
-			return 0;
-		}
-	}
-	return result;
-}
-
-int RightTreeBalDel(TNode*& p) {
-	Eff++;
-	int result = 0;
-
-	if (p->balance == -1)
-	{
-		p->balance = 0;
-		result = -1;
-	}
-	else if (p->balance == 0)
-	{
-		p->balance = 1;
-		result = 0;
-	}
-	else
-	{
-		TNode* pr = p->pRight;
-		if (pr->balance == 1)
-		{
-			p->pRight = pr->pLeft;
-			pr->pLeft = p;
-
-			pr->balance = 0;
-			p->balance = 0;
-
-			p = pr;
-			result = -1;
-		}
-		else if (pr->balance == -1)
-		{
-			TNode* prpl = pr->pLeft;
-
-			pr->pLeft = prpl->pRight;
-			prpl->pRight = pr;
-			p->pRight = prpl->pLeft;
-			prpl->pLeft = p;
-			if (prpl->balance == 1)
-			{
-				p->balance = -1;
-			}
-			else
-			{
-				p->balance = 0;
-			}
-			if (prpl->balance == -1)
-			{
-				pr->balance = 1;
-			}
-			else
-			{
-				pr->balance = 0;
-			}
-			p = prpl;
-			p->balance = 0;
-			result = -1;
-		}
-		else
-		{
-			TNode* pp = p;
-			TNode* prpl = pr->pLeft;
-			TNode* prpr = pr->pRight;
-
-			p = pr;
-			p->pLeft = pp;
-			p->pRight = prpr;
-			pp->pRight = prpl;
-			pr->balance = -1;
-			return 0;
-		}
-	}
-	return result;
-}
-
-int InsBalTree(TNode*& p, TRecord rec) {
-	Eff++;
-	int result = 0;
-
-	if (p == NULL) {
-		p = new TNode(rec);
-		result = 1;
-		DataCount++;
-	}
-	else if (p->rec.key > rec.key) {
-		int tmp = InsBalTree(p->pLeft, rec);
-
-		if (tmp == 1) {
-			result = LeftTreeBalIns(p);
-		}
-	}
-	else {
-		int tmp = InsBalTree(p->pRight, rec);
-
-		if (tmp == 1) {
-			result = RightTreeBalIns(p);
-		}
-	}
-
-	return result;
-}
-
-int DelBalTree(TNode*& p, TKey key) {
-	Eff++;
-	int result = 0;
-
-	if (p == NULL) {
-		return result;
-	}
-	if (key > p->rec.key) {
-		int tmp = DelBalTree(p->pRight, key);
-
-		if (tmp != 0) {
-			result = LeftTreeBalDel(p);
-		}
-	}
-	else if (key < p->rec.key) {
-		int tmp = DelBalTree(p->pLeft, key);
-
-		if (tmp != 0) {
-			result = RightTreeBalDel(p);
-		}
-	}
-	else if (key == p->rec.key) {
-		DataCount--;
-		if (p->pLeft == NULL && p->pRight == NULL) {
-			delete p;
-			p = NULL;
-			result = -1;
-		}
-		else if (p->pLeft != NULL && p->pRight == NULL) {
-			p->rec = p->pLeft->rec;
-			delete p->pLeft;
-			p->pLeft = NULL;
-			p->balance = 0;
-			result = -1;
-		}
-		else if (p->pLeft == NULL && p->pRight != NULL) {
-			p->rec = p->pRight->rec;
-			delete p->pRight;
-			p->pRight = NULL;
-			p->balance = 0;
-			result = 1;
-		}
-		else {
-			TNode* pL = p->pLeft;
-			TNode* pR = p->pRight;
-			TNode* pMax = FindMax(pL);
-
-			p->rec = pMax->rec;
-			int tmp = DelBalTree(p->pLeft, pMax->rec.key);
-
-			if (tmp != 0) {
-				result = RightTreeBalDel(p->pRight);
-			}
-		}
-	}
-	return result;
-}
-
-TNode* FindMax(TNode* p) const {
-	while (p->pRight != NULL) {
-		p = p->pRight;
-	}
-	return p;
-}
-
-public:
 	bool Insert(TRecord rec) {
 		if (Find(rec.key)) return false;
 
@@ -1069,4 +355,5 @@ public:
 		DelBalTree(pRoot, key);
 		return true;
 	}
+
 };

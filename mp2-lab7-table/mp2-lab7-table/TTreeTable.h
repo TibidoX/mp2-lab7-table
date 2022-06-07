@@ -10,62 +10,38 @@ protected:
 	TNode* pRoot, * pCurr, * pPrev;
 	TStack<TNode*> st;
 	int currPos;
+
 public:
-	TTreeTable()
-	{
-		pRoot = nullptr;
-		pCurr = nullptr;
-		pPrev = nullptr;
+	TTreeTable() {
+		pRoot = NULL;
+		pCurr = NULL;
+		pPrev = NULL;
 		currPos = 0;
 	}
 
-	~TTreeTable() { DelTree(pRoot); }
-
-	bool Find(TKey key)
-	{
+	bool Find(TKey key) {
 		pCurr = pRoot;
-		pPrev = nullptr;
-		while (pCurr != nullptr)
-		{
+		pPrev = NULL;
+
+		while (pCurr != NULL) {
+
 			Eff++;
-			if (pCurr->rec.key == key)
-			{
-				return true;
-			}
+			if (pCurr->rec.key == key) return true;
 			pPrev = pCurr;
-			if (pCurr->rec.key > key)
-			{
-				pCurr = pCurr->pLeft;
+
+			if (pCurr->rec.key > key) {
+				pCurr = pCurr->pL;
 			}
-			else
-			{
-				pCurr = pCurr->pRight;
+			else {
+				pCurr = pCurr->pR;
 			}
 		}
+
 		pCurr = pPrev;
 		return false;
 	}
 
-	bool Insert(TRecord rec)
-	{
-		//if (Find(rec.key))
-		//	return false;
-		//TNode* tmp = new TNode(rec);
-		//if (IsEmpty()) //??
-		//{
-		//	pRoot = tmp;
-		//}
-		//else
-		//{
-		//	if (rec.key > pCurr->rec.key)
-		//		pCurr->pR = tmp;
-		//	else
-		//		pCurr->pL = tmp;
-		//	DataCount++;
-		//	Eff++;
-		//	return true;
-		//}
-
+	bool Insert(TRecord rec) {
 		if (Find(rec.key)) return false;
 
 		TNode* tmp = new TNode(rec);
@@ -75,136 +51,140 @@ public:
 		}
 		else {
 			if (rec.key > pCurr->rec.key) {
-				pCurr->pRight = tmp;
+				pCurr->pR = tmp;
 			}
 			else {
-				pCurr->pLeft = tmp;
+				pCurr->pL = tmp;
 			}
 		}
-
+		Eff++;
 		DataCount++;
 		return true;
 	}
 
-	bool Delete(TKey key)
-	{
-		if (!Find(key))
-			return false;
+	bool Delete(TKey key) {
+		if (!Find(key)) return false;
 		TNode* tmp = pCurr;
-		if (pCurr->pRight == nullptr)
-		{
-			if (pPrev == nullptr)
-				pRoot = pCurr->pLeft;
-			if (pCurr->rec.key > pPrev->rec.key)
-				pPrev->pRight = pCurr->pLeft;
-			else
-				pPrev->pLeft = pCurr->pLeft;
-		}
-		else if (pCurr->pLeft == nullptr)
-		{
-			if (pPrev == nullptr)
-				pRoot = pCurr->pRight;
-			if (pCurr->rec.key > pPrev->rec.key)
-				pPrev->pRight = pCurr->pRight;
-			else
-				pPrev->pLeft = pCurr->pRight;
-		}
-		else
-		{
-			tmp = tmp->pLeft;
-			pPrev = pCurr;
-			while (tmp->pRight != nullptr)
-			{
-				pPrev = tmp;
-				tmp = tmp->pRight;
+
+		if (pCurr->pR == NULL) {
+			if (pPrev == NULL) {
+				pRoot = pCurr->pL;
 			}
+			else {
+				if (pCurr->rec.key > pPrev->rec.key) {
+					pPrev->pR = pCurr->pL;
+				}
+				else {
+					pPrev->pL = pCurr->pL;
+				}
+			}
+		}
+		else if (pCurr->pL == NULL) {
+			if (pPrev == NULL) {
+				pRoot = pCurr->pR;
+			}
+			else {
+				if (pCurr->rec.key > pPrev->rec.key) {
+					pPrev->pL = pCurr->pR;
+				}
+				else {
+					pPrev->pR = pCurr->pR;
+				}
+			}
+		}
+		else {
+			tmp = tmp->pL;
+			pPrev = pCurr;
+
+			while (tmp->pR != NULL) {
+				pPrev = tmp;
+				tmp = tmp->pR;
+			}
+
 			pCurr->rec = tmp->rec;
-			if (pCurr->pLeft == tmp)
-				pPrev->pLeft = tmp->pLeft;
-			else
-				pPrev->pRight = tmp->pLeft;
+			if (pCurr->pL == tmp) {
+				pPrev->pL = tmp->pL;
+			}
+			else {
+				pPrev->pR = tmp->pL;
+			}
+
 			delete tmp;
 		}
+
 		DataCount--;
 		Eff++;
 		return true;
 	}
 
-	void Reset()
-	{
+	TRecord GetCurrRec() const { return pCurr->rec; }
+
+
+	void Reset() {
 		currPos = 0;
 		pCurr = pRoot;
 		st.Clear();
-		if (pCurr)
-		{
-			while (pCurr->pLeft)
-			{
+		if (pCurr) {
+			while (pCurr->pL) {
 				st.Push(pCurr);
-				pCurr = pCurr->pLeft;
+				pCurr = pCurr->pL;
 			}
 		}
 		st.Push(pCurr);
 	}
 
-	bool GoNext()
-	{
-		pCurr = st.Pop();
-		if (pCurr)
-		{
-			if (pCurr->pRight)
-			{
-				pCurr = pCurr->pRight;
-				while (pCurr->pLeft)
-				{
+	bool GoNext() {
+		pCurr = st.Top();
+		st.Pop();
+
+		if (pCurr) {
+			if (pCurr->pR) {
+				pCurr = pCurr->pR;
+
+				while (pCurr->pL) {
 					st.Push(pCurr);
-					pCurr = pCurr->pLeft;
+					pCurr = pCurr->pL;
 				}
 				st.Push(pCurr);
+
 			}
-			else
-			{
-				if (!st.Empty())
-				{
+			else {
+				if (!st.Empty()) {
 					pCurr = st.Top();
 				}
 			}
 			currPos++;
-			return true;
 		}
-		return false;
+		return true;
 	}
 
 	bool IsEnd() { return currPos == DataCount; }
+
+	void PrintRec(std::ostream& os, TNode* node, int level) {
+		if (node) {
+			for (int i = 0; i < level; i++) {
+				os << ' ';
+			}
+
+			os << node->rec.key << std::endl;
+			PrintRec(os, node->pL, level + 1);
+			PrintRec(os, node->pR, level + 1);
+		}
+	}
+
+	void Print(std::ostream& os) {
+		PrintRec(os, pRoot, 0);
+		os << std::endl;
+	}
 
 	void DelTree(TNode* p)
 	{
 		if (p)
 		{
-			DelTree(p->pLeft);
-			DelTree(p->pRight);
+			DelTree(p->pL);
+			DelTree(p->pR);
 			delete p;
 		}
-	}
-
-	void PrintRec(ostream& os, TNode* p, int level)
-	{
-		if (p) {
-			for (int i = 0; i < level; i++)
-				os << ' ';
-			os << p->rec.key << endl;
-			PrintRec(os, p->pLeft, level + 1);
-			PrintRec(os, p->pRight, level + 1);
-		}
-	}
-
-	void Print(ostream& os) 
-	{
-		PrintRec(os, pRoot, 0);
-	}
-
-	TRecord GetCurrRec() const
-	{
-		return pCurr->rec;
 	}
 
 	bool IsFull() const { return false; }

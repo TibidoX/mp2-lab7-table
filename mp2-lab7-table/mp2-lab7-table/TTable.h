@@ -101,7 +101,7 @@ public:
 	virtual void Print(ostream& os)
 	{
 		for (Reset(); !IsEnd(); GoNext())
-			os << GetCurrRec().key << ":\t" << GetCurrRec().val;
+			os << GetCurrRec().key << ' ' << GetCurrRec().val << endl;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, TTable& t)
