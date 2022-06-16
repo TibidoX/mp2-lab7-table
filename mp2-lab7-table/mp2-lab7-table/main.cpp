@@ -20,17 +20,17 @@ void CreateTable(int _type ,int _size)
 	switch (_type)
 	{
 	case 1: {
-		table = new TScanTable(_size);
+		table = new TScanTable();
 		break;
 	}
 
 	case 2: {
-		table = new TSortTable(_size);
+		table = new TSortTable();
 		break;
 	}
 
 	case 3: {
-		table = new TArrayHash(_size);
+		table = new TArrayHash();
 		break;
 	}
 
@@ -62,7 +62,7 @@ void CreateTable(int _type ,int _size)
 		while (is_inserted != true)
 		{
 			insertRec.key = rand() % 100;
-			insertRec.val = std::string("record#") + std::to_string(i);
+			insertRec.val = string("record#") + to_string(i);
 			is_inserted = table->Insert(insertRec);
 		}
 	}
